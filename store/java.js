@@ -43,71 +43,99 @@ function initMobileNav() {
   });
 }
 
+function parseProductPrice(product) {
+  const text =
+    product.dataset.price ||
+    product.querySelector(".price")?.textContent ||
+    product.querySelector(".normal")?.textContent ||
+    "0";
+
+  const digits = text.replace(/[^0-9.]/g, "");
+  const parsed = Number.parseFloat(digits);
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
 function initProductCatalog() {
   const page =
     document.querySelector("[data-product-page]") ||
     document.querySelector(".products")?.closest("body");
   if (!page) return;
 
-  const grid = page.querySelector(".products-grid, .products");
-  const products = Array.from(page.querySelectorAll(".product-card, .card"));
+  const currentPage = (window.location.pathname.split("/").pop() || "")
+    .replace(/\.html$/i, "");
+  const defaultCategory = ["camera", "laptops", "drone", "pc"].includes(currentPage)
+    ? currentPage
+    : "all";
+
+  const grid = page.querySelector(".products");
+  const products = Array.from(page.querySelectorAll(".card"));
   if (!grid || !products.length) return;
 
-  let toolbar = page.querySelector(".catalog-toolbar");
-  if (!toolbar) {
-    toolbar = document.createElement("div");
-    toolbar.className = "catalog-toolbar";
-    toolbar.style.cssText =
-      "display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin:1rem 0;color:#b5bfd3";
-    toolbar.innerHTML =
-      '<label>Search <input type="search" data-product-search placeholder="Search products" style="padding:.7rem;border:1px solid rgba(255,255,255,.12);border-radius:10px;background:#172033;color:#edf5ff"></label><label>Sort <select data-sort style="padding:.7rem;border:1px solid rgba(255,255,255,.12);border-radius:10px;background:#172033;color:#edf5ff"><option value="featured">Featured</option><option value="price-low">Price: Low to high</option><option value="price-high">Price: High to low</option><option value="name">Name</option></select></label>';
-    grid.parentElement.insertBefore(toolbar, grid);
-  }
-
-  const search = toolbar.querySelector("[data-product-search]");
-  const sort = toolbar.querySelector("[data-sort]");
+  const search = page.querySelector("[data-product-search]");
+  const sort = page.querySelector("[data-sort]");
   const filters = page.querySelectorAll("[data-category-filter]");
-  let activeCategory = "all";
-
-  const priceOf = (product) =>
-    Number.parseFloat(product.dataset.price || "0") || 0;
+  const emptyState = page.querySelector(".no-results");
+  let activeCategory = defaultCategory;
 
   function render() {
     const query = (search?.value || "").trim().toLowerCase();
+
     products.forEach((product) => {
-      const name = (
+      const productCategory = (
+        product.dataset.category ||
+        defaultCategory ||
+        "all"
+      ).toLowerCase();
+      const title = (
         product.dataset.name ||
         product.querySelector(".title")?.textContent ||
-        product.textContent
-      ).toLowerCase();
-      product.hidden = !(
-        name.includes(query) &&
-        (activeCategory === "all" ||
-          product.dataset.category === activeCategory)
-      );
+        product.textContent || ""
+      )
+        .trim()
+        .toLowerCase();
+      const matchesCategory =
+        activeCategory === "all" || productCategory === activeCategory;
+      const matchesQuery = !query || title.includes(query);
+      product.hidden = !(matchesCategory && matchesQuery);
     });
 
     const visible = products.filter((product) => !product.hidden);
-    if (!grid || !sort) return;
-    visible
-      .sort((a, b) => {
-        if (sort.value === "price-low") return priceOf(a) - priceOf(b);
-        if (sort.value === "price-high") return priceOf(b) - priceOf(a);
-        if (sort.value === "name")
-          return (a.dataset.name || "").localeCompare(b.dataset.name || "");
+    if (sort) {
+      visible.sort((a, b) => {
+        if (sort.value === "price-low") return parseProductPrice(a) - parseProductPrice(b);
+        if (sort.value === "price-high") return parseProductPrice(b) - parseProductPrice(a);
+        if (sort.value === "name") {
+          const nameA = (a.dataset.name || a.querySelector(".title")?.textContent || "").trim().toLowerCase();
+          const nameB = (b.dataset.name || b.querySelector(".title")?.textContent || "").trim().toLowerCase();
+          return nameA.localeCompare(nameB);
+        }
         return 0;
-      })
-      .forEach((product) => grid.appendChild(product));
+      });
+
+      visible.forEach((product) => grid.appendChild(product));
+    }
+
+    if (emptyState) {
+      emptyState.classList.toggle("is-visible", visible.length === 0);
+    }
   }
 
   filters.forEach((button) =>
-    button.addEventListener("click", () => {
+    button.addEventListener("click", (event) => {
+      const target = button.getAttribute("href");
+      const targetPage = target ? target.replace(/\.html$/i, "") : "";
+      if (targetPage && targetPage !== currentPage) {
+        return;
+      }
+
+      event.preventDefault();
       filters.forEach((item) => item.classList.remove("is-active"));
       button.classList.add("is-active");
       activeCategory = button.dataset.categoryFilter || "all";
       render();
     }),
   );
+
   search?.addEventListener("input", render);
   sort?.addEventListener("change", render);
   render();

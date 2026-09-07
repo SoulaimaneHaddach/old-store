@@ -16,12 +16,37 @@
     <header>
       <a href="home.html" class="logo">LensMasters</a>
       <nav class="navg">
-        <a href="home.html">Home</a><a href="camera.html">Cameras</a
-        ><a href="laptops.html">Laptops</a><a href="drone.html">Drones</a
-        ><a href="pc.html">PC</a><a href="memberlist.html">Members</a>
+        <a href="home.html"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="camera.html"><i class="fa-solid fa-camera"></i> Cameras</a>
+        <a href="laptops.html"><i class="fa-solid fa-laptop"></i> Laptops</a>
+        <a href="drone.html"><i class="fa-solid fa-helicopter"></i> Drones</a>
+        <a href="pc.html"><i class="fa-solid fa-desktop"></i> PC</a>
+        <a href="memberlist.html"><i class="fa-solid fa-bars-staggered"></i> Members</a>
       </nav>
     </header>
     <h1 class="f">PC collection</h1>
+    <div class="category-nav" aria-label="Product categories">
+      <a class="category-chip is-active" href="pc.html" data-category-filter="all">All</a>
+      <a class="category-chip" href="camera.html" data-category-filter="camera">Camera</a>
+      <a class="category-chip" href="laptops.html" data-category-filter="laptops">Laptops</a>
+      <a class="category-chip" href="drone.html" data-category-filter="drone">Drone</a>
+      <a class="category-chip" href="pc.html" data-category-filter="pc">PC</a>
+    </div>
+    <div class="catalog-toolbar" aria-label="Catalog controls">
+      <div class="toolbar-field">
+        <label for="pc-search">Search</label>
+        <input id="pc-search" type="search" data-product-search placeholder="Search PCs" />
+      </div>
+      <div class="toolbar-field">
+        <label for="pc-sort">Sort by</label>
+        <select id="pc-sort" data-sort>
+          <option value="featured">Featured</option>
+          <option value="price-low">Price: low to high</option>
+          <option value="price-high">Price: high to low</option>
+          <option value="name">Name</option>
+        </select>
+      </div>
+    </div>
     <main class="sec">
       <div class="products">
         <article class="card">
@@ -63,6 +88,7 @@
         </article>
       </div>
     </main>
+    <p class="no-results" aria-live="polite">No PC models match your search.</p>
     <footer class="footer">
       <span>© 2026 LensMasters</span><a href="home.html">Home</a>
     </footer>

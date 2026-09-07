@@ -11,31 +11,42 @@
     <script src="java.js" defer></script>
 </head>
 <body>
-
- 
     <header>
         <a href="home.html" class="logo">LensMasters</a>
         <nav class="navg">
-          <a href="home.html"><i class="fa-solid fa-house"></i>  Home</a>
-          <a href="#contact"><i class="fa-solid fa-address-book"></i>  contact</a> 
-          <a target="_blank" href="memberlist.html"><i class="fa-solid fa-bars-staggered"></i>  Member owners </a>
+          <a href="home.html"><i class="fa-solid fa-house"></i> Home</a>
+          <a href="#contact"><i class="fa-solid fa-address-book"></i> Contact</a>
+          <a href="memberlist.html"><i class="fa-solid fa-bars-staggered"></i> Members</a>
       </nav>
  </header>
 
 <section>
   <div>
-    
-    <H2 class="f">ALL</H2>
-     <ul >
-      <li><a href="camera.html" class="activate" ><i class="fa-solid fa-camera"></i>  Camera</a></li>
-      <li><a href="laptops.html"><i class="fa-solid fa-laptop"></i>  Laptops</a></li>
-      <li><a href="drone.html"><i class="fa-brands fa-dropbox"></i>  Drone</a></li>
-    
-      <li><a href="pc.html"><i class="fa-solid fa-desktop"></i>  PC</a></li>
-</ul>
+    <h2 class="f">Cameras</h2>
+    <div class="category-nav" aria-label="Product categories">
+      <a class="category-chip is-active" href="camera.html" data-category-filter="all">All</a>
+      <a class="category-chip" href="camera.html" data-category-filter="camera">Camera</a>
+      <a class="category-chip" href="laptops.html" data-category-filter="laptops">Laptops</a>
+      <a class="category-chip" href="drone.html" data-category-filter="drone">Drone</a>
+      <a class="category-chip" href="pc.html" data-category-filter="pc">PC</a>
+    </div>
   </div>
- 
 </section>
+<div class="catalog-toolbar" aria-label="Catalog controls">
+  <div class="toolbar-field">
+    <label for="camera-search">Search</label>
+    <input id="camera-search" type="search" data-product-search placeholder="Search cameras" />
+  </div>
+  <div class="toolbar-field">
+    <label for="camera-sort">Sort by</label>
+    <select id="camera-sort" data-sort>
+      <option value="featured">Featured</option>
+      <option value="price-low">Price: low to high</option>
+      <option value="price-high">Price: high to low</option>
+      <option value="name">Name</option>
+    </select>
+  </div>
+</div>
 <section class="sec">
   <div class="products">
     
@@ -196,6 +207,8 @@
 
       </div>
 </section>
+
+<p class="no-results" aria-live="polite">No cameras match your search.</p>
 
 <section class="cards-contact" id="contact">
   <h2 class="title"> contact</h2>

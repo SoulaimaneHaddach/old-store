@@ -1,50 +1,102 @@
+:root {
+  --bg1: #0b1220;
+  --bg2: #1a2333;
+  --card: rgba(17, 24, 39, 0.82);
+  --text: #edf5ff;
+  --muted: #bfd1e8;
+  --brand: #03dac6;
+  --accent: #ff0266;
+  --line: rgba(255, 255, 255, 0.08);
+}
 * {
   box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
 }
 body {
   margin: 0;
   min-height: 100vh;
   font-family: Roboto, sans-serif;
-  background: linear-gradient(135deg, #0b1220, #1a2333);
-  color: #edf5ff;
+  background:
+    radial-gradient(circle at top, rgba(3, 218, 198, 0.12), transparent 20%),
+    linear-gradient(135deg, var(--bg1), var(--bg2));
+  color: var(--text);
+}
+a {
+  color: inherit;
+  text-decoration: none;
 }
 .members-page {
   width: min(100% - 2rem, 900px);
   margin: auto;
-  padding: 4rem 0;
+  padding: 4rem 0 5rem;
 }
-.members-page > a {
-  color: #03dac6;
-  text-decoration: none;
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--brand);
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(3, 218, 198, 0.26);
+  border-radius: 999px;
+  background: rgba(3, 218, 198, 0.08);
+}
+.members-header {
+  margin: 2rem 0 1.5rem;
+}
+.eyebrow {
+  color: var(--brand);
+  text-transform: uppercase;
+  letter-spacing: 0.18rem;
+  font-size: 0.72rem;
+  font-weight: 700;
 }
 .members-page h1 {
   font-family: "Josefin Sans", sans-serif;
   font-size: clamp(2rem, 6vw, 4rem);
-  margin: 2rem 0;
+  margin-top: 0.75rem;
 }
 .table-wrap {
   overflow: auto;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
+  border-radius: 18px;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.18);
 }
 table {
   width: 100%;
   border-collapse: collapse;
   min-width: 520px;
-  background: rgba(17, 24, 39, 0.8);
+  background: var(--card);
 }
 th,
 td {
   text-align: left;
-  padding: 1rem;
+  padding: 1rem 1.1rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 th {
-  color: #03dac6;
+  color: var(--brand);
   text-transform: uppercase;
   font-size: 0.8rem;
   letter-spacing: 0.1rem;
 }
 tr:last-child td {
   border-bottom: 0;
+}
+tr:hover td {
+  background: rgba(255, 255, 255, 0.015);
+}
+@media (max-width: 560px) {
+  .members-page {
+    padding-top: 2.5rem;
+  }
+  .members-page h1 {
+    font-size: 2.4rem;
+  }
+  .back-link {
+    width: 100%;
+    justify-content: center;
+  }
 }

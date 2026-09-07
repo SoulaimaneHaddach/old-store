@@ -7,14 +7,19 @@
   --brand: #03dac6;
   --accent: #ff0266;
   --line: rgba(255, 255, 255, 0.08);
+  --card-bg: #f8fafc;
+  --card-text: #172033;
 }
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
+html {
+  scroll-behavior: smooth;
+}
 body {
-  font-family: Poppins, sans-serif;
+  font-family: "Poppins", sans-serif;
   background: linear-gradient(180deg, #0b1220, #111827);
   color: var(--text);
   line-height: 1.5;
@@ -30,12 +35,13 @@ img {
 header {
   position: sticky;
   top: 0;
-  z-index: 5;
+  z-index: 20;
   background: rgba(11, 18, 32, 0.92);
   backdrop-filter: blur(12px);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
   padding: 1rem clamp(1rem, 5vw, 4rem);
   border-bottom: 1px solid var(--line);
 }
@@ -48,21 +54,102 @@ header {
 .navg {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0.7rem;
   color: var(--muted);
 }
-.navg a:hover {
+.navg a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.8rem;
+  border-radius: 999px;
+  transition: all 0.2s ease;
+}
+.navg a:hover,
+.navg a:focus-visible,
+.navg a.active {
   color: var(--brand);
+  background: rgba(3, 218, 198, 0.12);
 }
 .f {
   text-align: center;
   font-size: clamp(2rem, 5vw, 4rem);
-  padding: 3rem 1rem 1rem;
+  padding: 2.5rem 1rem 0.75rem;
+}
+.catalog-shell {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem 4rem;
+}
+.category-nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1rem auto 0.5rem;
+}
+.category-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--muted);
+  padding: 0.7rem 1rem;
+  border-radius: 999px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+.category-chip.is-active,
+.category-chip:hover,
+.category-chip:focus-visible {
+  background: rgba(3, 218, 198, 0.12);
+  border-color: rgba(3, 218, 198, 0.32);
+  color: var(--brand);
+}
+.catalog-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  flex-wrap: wrap;
+  gap: 1rem;
+  max-width: 1200px;
+  margin: 1.5rem auto 1rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(17, 24, 39, 0.52);
+}
+.toolbar-field {
+  display: grid;
+  gap: 0.5rem;
+  min-width: 200px;
+  flex: 1;
+}
+.toolbar-field label {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+.toolbar-field input,
+.toolbar-field select {
+  width: 100%;
+  padding: 0.8rem 0.9rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(10, 17, 29, 0.8);
+  color: var(--text);
+  outline: none;
+}
+.toolbar-field input:focus,
+.toolbar-field select:focus {
+  border-color: rgba(3, 218, 198, 0.72);
+  box-shadow: 0 0 0 3px rgba(3, 218, 198, 0.15);
 }
 .sec {
   max-width: 1200px;
   margin: auto;
-  padding: 1rem clamp(1rem, 4vw, 3rem) 4rem;
+  padding: 0 1rem 2rem;
 }
 .products {
   display: grid;
@@ -70,19 +157,25 @@ header {
   gap: 1.3rem;
 }
 .products .card {
-  background: #f8fafc;
-  color: #172033;
+  background: var(--card-bg);
+  color: var(--card-text);
   border-radius: 18px;
   overflow: hidden;
   box-shadow: 0 18px 35px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  border: 1px solid transparent;
 }
 .products .card:hover {
   transform: translateY(-4px);
+  box-shadow: 0 20px 46px rgba(0, 0, 0, 0.24);
+  border-color: rgba(3, 218, 198, 0.3);
+}
+.products .card[hidden] {
+  display: none !important;
 }
 .img {
   height: 220px;
-  background: #f1f5f9;
+  background: linear-gradient(180deg, #f5f7fb, #edf2f7);
   display: grid;
   place-items: center;
   padding: 1rem;
@@ -111,23 +204,42 @@ header {
   gap: 0.5rem;
   padding: 1rem;
 }
-.price {
-  font-size: 1.25rem;
+.old,
+.price,
+.normal {
   font-weight: 700;
+}
+.old {
+  color: #6b7280;
+  text-decoration: line-through;
+  margin: 0.35rem 1rem 0;
+}
+.price,
+.normal {
+  font-size: 1.25rem;
   color: #172033;
 }
 .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: var(--accent);
   color: #fff;
-  padding: 0.65rem 0.9rem;
+  padding: 0.7rem 0.9rem;
   border-radius: 999px;
   font-weight: 600;
   font-size: 0.85rem;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.btn:hover,
+.btn:focus-visible {
+  transform: translateY(-1px);
+  opacity: 0.95;
 }
 .cards-contact {
   max-width: 1200px;
   margin: auto;
-  padding: 3rem 1rem;
+  padding: 3rem 1rem 0;
 }
 .cards-contact > .title {
   text-align: center;
@@ -138,6 +250,7 @@ header {
   justify-content: center;
   gap: 1rem;
   flex-wrap: wrap;
+  margin-top: 1.25rem;
 }
 .card1 {
   padding: 1.5rem;
@@ -157,17 +270,41 @@ header {
 .footer {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 1rem;
   padding: 1rem clamp(1rem, 5vw, 4rem);
   border-top: 1px solid var(--line);
   color: var(--muted);
+  margin-top: 2.5rem;
+}
+.footer-title {
+  font-size: 0.92rem;
+}
+.footer-title span {
+  color: var(--brand);
 }
 .icons {
   display: flex;
   gap: 1rem;
+  font-size: 1.2rem;
 }
-.icons a:hover {
+.icons a:hover,
+.icons a:focus-visible {
   color: var(--brand);
+}
+.no-results {
+  display: none;
+  margin: 1.5rem auto 0;
+  padding: 1rem 1.25rem;
+  max-width: 1200px;
+  border: 1px dashed rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.02);
+  text-align: center;
+}
+.no-results.is-visible {
+  display: block;
 }
 @media (max-width: 700px) {
   header {
@@ -176,12 +313,23 @@ header {
     gap: 0.7rem;
   }
   .navg {
-    gap: 0.7rem;
+    width: 100%;
+    gap: 0.4rem;
     font-size: 0.9rem;
+  }
+  .navg a {
+    width: fit-content;
+  }
+  .catalog-toolbar {
+    flex-direction: column;
+    align-items: stretch;
   }
   .box,
   .footer {
     flex-direction: column;
     align-items: stretch;
+  }
+  .btn {
+    width: 100%;
   }
 }
